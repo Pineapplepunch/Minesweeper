@@ -87,8 +87,11 @@ class Window(tk.Frame):
         self.mines = int(self.sizes[self.board_size_val.get()].split('x')[0])
         self.dimensions = [int(self.sizes[self.board_size_val.get()].split('x')[1]),int(self.sizes[self.board_size_val.get()].split('x')[2])]
         #calculate the size of the window with 20pixel borders(20*2=40) with the square size being 28
-        self.window_geometry = f'{(28*self.dimensions[0])+40}x{(28*self.dimensions[1])+61}' #self.sizes[self.board_size_val.get()].split('-')[2][:-2]+"20"#first time open
-        
+        #windows
+        if os.name=='nt':
+            self.window_geometry = f'{(28*self.dimensions[0])+40}x{(28*self.dimensions[1])+61}' #self.sizes[self.board_size_val.get()].split('-')[2][:-2]+"20"#first time open
+        else:
+            self.window_geometry = f'{(37*self.dimensions[0])+25}x{(34*self.dimensions[1])+15}'
         
         self.configure(background=self.colours[0])
         #self.master.resizable(0,0)
@@ -234,8 +237,11 @@ class Window(tk.Frame):
                         button.destroy()
                 self.mines = int(self.sizes[self.board_size_val.get()].split('x')[0])
                 self.dimensions = [int(self.sizes[self.board_size_val.get()].split('x')[1]),int(self.sizes[self.board_size_val.get()].split('x')[2])]
-                self.window_geometry = f'{(28*self.dimensions[0])+40}x{(28*self.dimensions[1])+41}' #self.sizes[self.board_size_val.get()].split('-')[2][:-2]+"20"#first time open
-                
+                if os.name=='nt':
+	                self.window_geometry = f'{(28*self.dimensions[0])+40}x{(28*self.dimensions[1])+41}' #self.sizes[self.board_size_val.get()].split('-')[2][:-2]+"20"#first time open
+                else:
+                    self.window_geometry = f'{(37*self.dimensions[0])+25}x{(34*self.dimensions[1])+15}'
+
                 
                 self.master.geometry(self.window_geometry)
                 self.create_board(self.dimensions[0],self.dimensions[1])
@@ -301,6 +307,8 @@ class Window(tk.Frame):
                 # 2+20+2
                 b = tk.Button(self.board,text=" ",borderwidth=2,relief='raised',background=self.colours[2],foreground=self.colours[5],disabledforeground=self.colours[6],command= lambda x=x,y=y: self.clicked_cell(x,y))
                 b.configure(width=20,height=20,image=self.onepixel,compound=tk.CENTER)
+                if os.name!='nt':
+                    b.configure(width=5,height=15,image=self.onepixel,compound=tk.CENTER)
                 b.bind('<Button-2>',lambda event, y=y,x=x: self.flagged_cell(x,y))
                 b.bind('<Button-3>',lambda event, y=y,x=x: self.exclude_cell(x,y))
                 b.grid(row=x+1,column=y+1,sticky='nesw',padx=0,pady=0)
