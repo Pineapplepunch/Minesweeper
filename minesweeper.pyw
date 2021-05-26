@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import sys,os,re,random,time
 from datetime import datetime
 from stat import S_IREAD,S_IWRITE
