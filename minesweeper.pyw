@@ -4,7 +4,7 @@ from stat import S_IREAD,S_IWRITE
 import tkinter as tk
 import tkinter.ttk as ttk
 from tkinter import messagebox
-
+import webbrowser
 
 '''
 | event                 | name                  |
@@ -49,8 +49,10 @@ class Window(tk.Frame):
         self.master=master
         self.master.eval("tk::PlaceWindow %s center"% self.master.winfo_pathname(self.master.winfo_id()))
         self.master.title("MineSweeper")
-        self.master.iconphoto(True,tk.PhotoImage(file='mine.png'))
-        
+        try:
+            self.master.iconphoto(True,tk.PhotoImage(file='mine.png'))
+        except:
+            pass
         
         self.sizes={#MinesXcolumnsXrows
             'Small' :'10x9x9',
@@ -108,6 +110,9 @@ class Window(tk.Frame):
             self.start_game_random_start()
 
     def create_menu(self):
+        def toGitHub():
+            webbroser.open_new('https://github.com/Pineapplepunch/Minesweeper')
+            
         self.board_style_val = tk.StringVar()
         self.board_size_val = tk.StringVar()
         self.allow_qmark = tk.BooleanVar()
@@ -144,7 +149,7 @@ class Window(tk.Frame):
         self.game_menu.add_separator()
         self.game_menu.add_command(label='Exit',command= lambda: os._exit(1))
         
-        self.help_menu.add_command(label='FUGS')
+        self.help_menu.add_command(label='Link to Github', command=toGitHub )
         
         self.master.bind('<KeyPress-F2>',lambda e: self.start_new_game())
         self.master.bind('<KeyPress-F4>',lambda e: self.show_statistics_window())
