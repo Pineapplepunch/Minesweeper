@@ -91,7 +91,7 @@ class Window(tk.Frame):
         if os.name=='nt':
             self.window_geometry = f'{(28*self.dimensions[0])+40}x{(28*self.dimensions[1])+61}' #self.sizes[self.board_size_val.get()].split('-')[2][:-2]+"20"#first time open
         else:
-            self.window_geometry = f'{(32*self.dimensions[0])+40}x{(32*self.dimensions[1])+61}'
+            self.window_geometry = f'{(31*self.dimensions[0])+40}x{(31*self.dimensions[1])+61}'
         
         self.configure(background=self.colours[0])
         #self.master.resizable(0,0)
@@ -240,8 +240,8 @@ class Window(tk.Frame):
                 if os.name=='nt':
 	                self.window_geometry = f'{(28*self.dimensions[0])+40}x{(28*self.dimensions[1])+41}' #self.sizes[self.board_size_val.get()].split('-')[2][:-2]+"20"#first time open
                 else:
-                    self.window_geometry = f'{(37*self.dimensions[0])+25}x{(34*self.dimensions[1])+15}'
-
+                    self.window_geometry = f'{(31*self.dimensions[0])+40}x{(31*self.dimensions[1])+41}'
+        
                 
                 self.master.geometry(self.window_geometry)
                 self.create_board(self.dimensions[0],self.dimensions[1])
@@ -259,8 +259,11 @@ class Window(tk.Frame):
                 
             self.mines = int(self.sizes[self.board_size_val.get()].split('x')[0])
             self.dimensions = [int(self.sizes[self.board_size_val.get()].split('x')[1]),int(self.sizes[self.board_size_val.get()].split('x')[2])]
-            self.window_geometry = f'{(28*self.dimensions[0])+40}x{(28*self.dimensions[1])+41}' #self.sizes[self.board_size_val.get()].split('-')[2][:-2]+"20"#first time open
-                
+            if os.name=='nt':
+	            self.window_geometry = f'{(28*self.dimensions[0])+40}x{(28*self.dimensions[1])+41}' #self.sizes[self.board_size_val.get()].split('-')[2][:-2]+"20"#first time open
+            else:
+                self.window_geometry = f'{(31*self.dimensions[0])+40}x{(31*self.dimensions[1])+41}'
+            
             self.master.geometry(self.window_geometry)
             self.create_board(self.dimensions[0],self.dimensions[1])
             self.board_grid=[[ 0 for x in range(self.dimensions[0])] for y in range(self.dimensions[1])]
@@ -447,6 +450,7 @@ class Window(tk.Frame):
                 losses = 1 if not is_win else 0
                 wins = 1 if is_win else 0
                 f.write('1|{}|{}\n'.format(losses,wins))
+                f.write('{}|{}|{} Seconds\n'.format(self.board_size_val.get(),datetime.now().strftime('%m/%d/%Y'),str(self.timer)))
             os.chmod('stats',S_IREAD)
         else:
             os.chmod('stats',S_IREAD| S_IWRITE)
